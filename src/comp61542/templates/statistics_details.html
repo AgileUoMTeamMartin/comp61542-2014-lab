@@ -4,18 +4,18 @@
 
 <h1>{{ args.title }}</h1>
 
-<table>
+<table class="table table-bordered table-hover table-striped tablesorter">
   <thead>
-    <tr>
+    <tr class="gradeX">
     {% for column in args.data[0] %}
-      <th>{{ column }}</th>
+      <th class="sorting" tabindex="0" aria-controls="dataTables-example" rowspan="1" colspan="1" aria-label="Browser: activate to sort column ascending" style="width: 379px;">{{ column }}</th>
     {% endfor %}
     </tr>
   </thead>
 
   <tbody>
   {% for row in args.data[1] %}
-    <tr>
+    <tr class="gradeX">
     {% for data_item in row %}
       <td>{{ data_item }}</td>
     {% endfor %}
