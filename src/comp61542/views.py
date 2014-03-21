@@ -116,4 +116,11 @@ def showPublicationSummary(status):
         args["title"] = "Author by Year"
         args["data"] = db.get_author_totals_by_year()
 
-    return render_template('statistics_details.html', args=args)
+    return render_template("statistics_details.html", args=args)
+
+
+@app.route("/author")
+def showAuthors():
+    dataset = app.config['DATASET']
+    args = {"dataset":dataset}
+    return render_template('author.html',args=args)
