@@ -31,5 +31,10 @@ def mode(X):
     for key in d.keys():
         if d[key] > m[1]:
             m = (key, d[key])
-
-    return [m[0]]
+    
+    result = [m[0]]
+    
+    for key in d.keys():
+        if key != m[0] and d[key] == m[1]:
+            result.append(key)
+    return result
