@@ -362,6 +362,34 @@ class Database:
                     links.add((a, a2))
         return (nodes, links)
 
+    '''
+    args: the name of the author.
+    return: an integer representing number of times an author appears fist. Or None
+    '''
+    def get_times_author_appears_first(self, author):
+        if not author in self.author_idx.keys():
+            return None
+                
+        times = 0
+        idx = self.author_idx.get(author)  # get the id of the author
+        
+        for pub in self.publications:
+            if  idx == pub.authors[0]:
+                times = times + 1
+        return times
+        
+    def get_times_author_appears_last(self, author):
+        if not author in self.author_idx.keys():
+            return None
+        
+        times = 0
+        idx = self.author_idx.get(author)  # get the id of the author
+
+        for pub in self.publications:
+            if  idx == pub.authors[-1]:
+                times = times + 1
+        return times 
+         
 class DocumentHandler(handler.ContentHandler):
     TITLE_TAGS = [ "sub", "sup", "i", "tt", "ref" ]
     PUB_TYPE = {

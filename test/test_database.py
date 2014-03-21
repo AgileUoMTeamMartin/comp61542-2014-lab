@@ -159,6 +159,42 @@ class TestDatabase(unittest.TestCase):
             "incorrect year in result")
         self.assertEqual(data[0][1], 2,
             "incorrect number of authors in result")
-
+    
+    # testing how many times an author appears first
+    def test_get_times_author_appears_first(self):
+        # expected results for authros
+        expected_results = {
+            'Meng': 2,
+            'Mohammed': 0,
+            'Aris': 1,
+            'Maryam': 3,
+        }
+        
+        db = database.Database()
+        self.assertTrue(db.read(path.join(self.data_dir, "2014_sprint1_test_first_last.xml")))
+        authors = db.get_all_authors()
+        for author in authors:
+            times = db.get_times_author_appears_first(author)
+            expected = expected_results.get(author) if expected_results.get(author) != None else 0
+            self.assertEqual(times, expected, 'Incorrect result for {}, {}. Expected is: {}'.format(author, times, expected))
+    
+    # testing how many times an author appears last
+    def test_get_times_author_appears_last(self):
+        # expected results for authros
+        expected_results = {
+            'Meng': 3,
+            'Mohammed': 2,
+            'Aris': 1,
+            'Maryam': 0,
+        }
+        
+        db = database.Database()
+        self.assertTrue(db.read(path.join(self.data_dir, "2014_sprint1_test_first_last.xml")))
+        authors = db.get_all_authors()
+        for author in authors:
+            times = db.get_times_author_appears_last(author)
+            expected = expected_results.get(author) #if expected_results.get(author) != None else 0
+            self.assertEqual(times, expected, 'Incorrect result for {}, {}. Expected is: {}'.format(author, times, expected))
+            
 if __name__ == '__main__':
     unittest.main()
