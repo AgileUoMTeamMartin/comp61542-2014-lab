@@ -120,10 +120,15 @@ def showPublicationSummary(status):
 
 
 @app.route("/author/<name>")
-def showAuthors(name):
+def showAuthors(name=None):
     dataset = app.config['DATASET']
+    db = app.config['DATABASE']
     args = {"dataset":dataset ,"id":name}
-    return render_template('author.html', args=args )
+    args["name"]=name
+    lista = db.get_publications_by_author()
+    listb=lista[lista.index(name, )]
+    args["data"]=listb
+    return render_template('author.html', args=args)
 
 @app.route("/author")
 def showAuthorsSearch():

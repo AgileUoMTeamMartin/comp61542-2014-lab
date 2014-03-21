@@ -13,10 +13,13 @@ Author: <input type="text" name="author_name" value="{{ args.author_name }}">
 <input type="submit" value="Submit">
 </form>
 
+<h3>{{args.name}}</h3>
 
-
-
-
+{% for data_item in args.data %}
+  {% for item in data_item   %}
+    {{ item }}
+  {% endfor %}
+{% endfor %}
 
 
 
