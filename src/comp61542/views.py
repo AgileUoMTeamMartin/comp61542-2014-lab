@@ -125,9 +125,15 @@ def showAuthors(name=None):
     db = app.config['DATABASE']
     args = {"dataset":dataset ,"id":name}
     args["name"]=name
-    lista = db.get_publications_by_author()
-    listb=lista[lista.index(name, )]
-    args["data"]=listb
+    args['stats'] = db.get_publications_by_author_name(name)
+    coauthors = db.get_coauthor_details(name)
+    for auth in coauthors:
+        if auth[0] == name:
+            args['auth'] = auth
+            break
+    args["times_first"]= db.get_times_author_appears_first(name)
+    args["times_last"]= db.get_times_author_appears_last(name)
+    
     return render_template('author.html', args=args)
 
 @app.route("/author")

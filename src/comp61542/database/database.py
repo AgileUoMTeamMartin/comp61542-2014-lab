@@ -222,6 +222,20 @@ class Database:
         data = [ [self.authors[i].name] + astats[i] + [sum(astats[i])]
             for i in range(len(astats)) ]
         return (header, data)
+    
+    def get_publications_by_author_name(self, author_name):
+        header = ("Author", "Number of conference papers",
+            "Number of journals", "Number of books",
+            "Number of book chapers", "Total")
+        
+        idx = self.author_idx.get(author_name)  # get the id of the author
+        astats =  [0, 0, 0, 0]
+        for p in self.publications:
+            if idx in p.authors:
+                    astats[p.pub_type] += 1
+
+        return [astats + [sum(astats)]]
+   
 
     def get_average_authors_per_publication_by_year(self, av):
         header = ("Year", "Conference papers",
@@ -348,7 +362,7 @@ class Database:
         data = self._get_collaborations(author_id, True)
         return [ (self.authors[key].name, data[key])
             for key in data ]
-
+        
     def get_network_data(self):
         na = len(self.authors)
 
