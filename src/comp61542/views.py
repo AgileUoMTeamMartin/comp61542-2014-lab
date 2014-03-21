@@ -119,8 +119,14 @@ def showPublicationSummary(status):
     return render_template("statistics_details.html", args=args)
 
 
+@app.route("/author/<name>")
+def showAuthors(name):
+    dataset = app.config['DATASET']
+    args = {"dataset":dataset ,"id":name}
+    return render_template('author.html', args=args )
+
 @app.route("/author")
-def showAuthors():
+def showAuthorsSearch():
     dataset = app.config['DATASET']
     args = {"dataset":dataset}
-    return render_template('author.html',args=args)
+    return render_template('author.html', args=args )

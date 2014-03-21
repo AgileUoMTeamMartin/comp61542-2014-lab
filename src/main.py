@@ -23,4 +23,6 @@ if "DEBUG" in os.environ:
 if "TESTING" in os.environ:
     app.config['TESTING'] = True
 
+# WARNING remove this line before commit
+app.config['DEBUG'] = True
 app.run(host='0.0.0.0', port=9292)

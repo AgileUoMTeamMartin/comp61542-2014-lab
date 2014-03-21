@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+
+{% block content %}
+
+
+
+
+<h1>authors</h1>
+<form name="input" action="/coauthors" method="get" data-ajax="false" onSubmit="validateForm(this)">
+Author: <input type="text" name="author_name" value="{{ args.author_name }}">
+
+<input type="submit" value="Submit">
+</form>
+
+
+
+
+
+
+
+
+
+{% endblock %}
