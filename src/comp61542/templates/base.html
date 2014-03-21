@@ -8,15 +8,7 @@
 <link href="{{ url_for('static', filename='font-awesome/css/font-awesome.css') }}" rel="stylesheet">
 
 
-    <!-- Page-Level Plugin Scripts - Tables -->
-    <script src="/static/js/plugins/dataTables/jquery.dataTables.js"></script>
-    <script src="/static/js/plugins/dataTables/dataTables.bootstrap.js"></script>
-
-    <!-- SB Admin Scripts - Include with every page -->
-    <script src="/static/js/sb-admin.js"></script>
-<script src="/static/js/jquery-1.10.2.js"></script>
-<script src="/static/js/bootstrap.js"></script>
- <!-- Bootstrap core CSS -->
+  
 
   <head>
     <title>{% block title %}{% endblock %}</title>
@@ -120,6 +112,7 @@
         <!-- /#page-wrapper -->
 
     </div>
+
  <!--  <div id="wrapper">
     <div id="page">
       <div id="header">
@@ -133,5 +126,25 @@
      
     </div>
     </div> -->
+    
+
+  
+
+    <!-- SB Admin Scripts - Include with every page -->
+    <script type=text/javascript src="{{ url_for('static',filename='js/jquery-1.10.2.js')}}"></script>
+    <script type=text/javascript src="{{ url_for('static',filename='js/sb-admin.js')}}"></script>
+    
+    <script type=text/javascript src="{{ url_for('static',filename='js/bootstrap.js')}}"></script>
+    <script type=text/javascript src="{{ url_for('static',filename='js/plugins/metisMenu/jquery.metisMenu.js')}}"></script>
+   
+    <!-- Page-Level Plugin Scripts - Tables -->
+    <script  type=text/javascript src="{{ url_for('static', filename='js/plugins/dataTables/jquery.dataTables.js')}}"></script>
+    <script  type=text/javascript src="{{ url_for('static', filename='js/plugins/dataTables/dataTables.bootstrap.js')}}"></script>
+    <!-- Bootstrap core CSS -->
+    <script>
+    $(document).ready(function() {
+        $('#dataTables').dataTable();
+    });
+</script>
   </body>
 </html>
