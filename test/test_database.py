@@ -193,8 +193,23 @@ class TestDatabase(unittest.TestCase):
         authors = db.get_all_authors()
         for author in authors:
             times = db.get_times_author_appears_last(author)
-            expected = expected_results.get(author) #if expected_results.get(author) != None else 0
+            expected = expected_results.get(author) if expected_results.get(author) != None else 0
             self.assertEqual(times, expected, 'Incorrect result for {}, {}. Expected is: {}'.format(author, times, expected))
-            
+    
+    def test_get_publications_by_author_name(self):
+        # expected results for authros
+        expected_results = {
+            'Meng': [5, 0, 0, 0, 5],
+            'Mohammed': [5, 0, 0, 0, 5],
+            'Aris': [1, 0, 0, 0, 1],
+            'Maryam': [4, 0, 0, 0, 4],
+        }
+        db = database.Database()
+        self.assertTrue(db.read(path.join(self.data_dir, "2014_sprint1_test_first_last.xml")))
+        authors = db.get_all_authors()
+        for author in authors:
+            stats = db.get_publications_by_author_name(author)
+            expected = expected_results.get(author) if expected_results.get(author) != None else 0
+            self.assertEqual(stats, expected, 'Incorrect stats for {}: {}. Expected {}'.format(author, stats, expected))
 if __name__ == '__main__':
     unittest.main()

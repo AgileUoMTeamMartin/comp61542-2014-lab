@@ -3,8 +3,8 @@ import itertools
 import numpy as np
 from xml.sax import handler, make_parser, SAXException
 
-PublicationType = [
-    "Conference Paper", "Journal", "Book", "Book Chapter"]
+PublicationType = ["Conference Paper", "Journal", 
+                   "Book", "Book Chapter"]
 
 class Publication:
     CONFERENCE_PAPER = 0
@@ -19,6 +19,8 @@ class Publication:
             self.year = int(year)
         else:
             self.year = -1
+        # This is bad code. How could I tell what authors represent?
+        # The instance variables must be decleared clearly
         self.authors = authors
 
 class Author:
@@ -60,6 +62,39 @@ class Database:
 
         return valid
 
+    def add_publication(self, pub_type, title, year, authors):
+        if year == None or len(authors) == 0:
+            # Logger class is a better option to print such warnings instead of print
+            print "Warning: excluding publication due to missing information"
+            print "    Publication type:", PublicationType[pub_type]
+            print "    Title:", title
+            print "    Year:", year
+            print "    Authors:", ",".join(authors)
+            return
+        if title == None:
+            # again same comment as above
+            print "Warning: adding publication with missing title [ %s %s (%s) ]" % (PublicationType[pub_type], year, ",".join(authors))
+        
+        # author is assigned and id, which is the index the Author object is added at in self.authors array
+        idlist = []
+        for a in authors:
+            try:
+                idlist.append(self.author_idx[a])
+            except KeyError:
+                a_id = len(self.authors) # author id is its index in self.authors
+                self.author_idx[a] = a_id
+                idlist.append(a_id)
+                self.authors.append(Author(a))
+        self.publications.append(
+            Publication(pub_type, title, year, idlist))
+        if (len(self.publications) % 100000) == 0:
+            print "Adding publication number %d (number of authors is %d)" % (len(self.publications), len(self.authors))
+
+        if self.min_year == None or year < self.min_year:
+            self.min_year = year
+        if self.max_year == None or year > self.max_year:
+            self.max_year = year
+            
     def get_all_authors(self):
         return self.author_idx.keys()
 
@@ -227,14 +262,12 @@ class Database:
         header = ("Author", "Number of conference papers",
             "Number of journals", "Number of books",
             "Number of book chapers", "Total")
-        
         idx = self.author_idx.get(author_name)  # get the id of the author
         astats =  [0, 0, 0, 0]
         for p in self.publications:
             if idx in p.authors:
                     astats[p.pub_type] += 1
-
-        return [astats + [sum(astats)]]
+        return astats + [sum(astats)]
    
 
     def get_average_authors_per_publication_by_year(self, av):
@@ -315,35 +348,6 @@ class Database:
             for y in ystats ]
         return (header, data)
 
-    def add_publication(self, pub_type, title, year, authors):
-        if year == None or len(authors) == 0:
-            print "Warning: excluding publication due to missing information"
-            print "    Publication type:", PublicationType[pub_type]
-            print "    Title:", title
-            print "    Year:", year
-            print "    Authors:", ",".join(authors)
-            return
-        if title == None:
-            print "Warning: adding publication with missing title [ %s %s (%s) ]" % (PublicationType[pub_type], year, ",".join(authors))
-        idlist = []
-        for a in authors:
-            try:
-                idlist.append(self.author_idx[a])
-            except KeyError:
-                a_id = len(self.authors)
-                self.author_idx[a] = a_id
-                idlist.append(a_id)
-                self.authors.append(Author(a))
-        self.publications.append(
-            Publication(pub_type, title, year, idlist))
-        if (len(self.publications) % 100000) == 0:
-            print "Adding publication number %d (number of authors is %d)" % (len(self.publications), len(self.authors))
-
-        if self.min_year == None or year < self.min_year:
-            self.min_year = year
-        if self.max_year == None or year > self.max_year:
-            self.max_year = year
-
     def _get_collaborations(self, author_id, include_self):
         data = {}
         for p in self.publications:
@@ -388,6 +392,8 @@ class Database:
         idx = self.author_idx.get(author)  # get the id of the author
         
         for pub in self.publications:
+            # authors in pub are stored in the way they appeared in papaer
+            # So we get the author at the 1st index
             if  idx == pub.authors[0]:
                 times = times + 1
         return times
