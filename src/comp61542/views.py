@@ -124,12 +124,16 @@ def showAuthors(name=None):
     dataset = app.config['DATASET']
     db = app.config['DATABASE']
     args = {"dataset":dataset ,"id":name}
-    args["name"]=name
+    
+    args["name"]= name
     args['stats'] = db.get_publications_by_author_name(name)
     coauthors = db.get_coauthor_details(name)
+    args['total_coauthors'] = len(coauthors) - 1
+     
     for auth in coauthors:
         if auth[0] == name:
-            args['auth'] = auth
+            coauthors.remove(auth)
+            args['coauthors'] = coauthors
             break
     args["times_first"]= db.get_times_author_appears_first(name)
     args["times_last"]= db.get_times_author_appears_last(name)

@@ -258,10 +258,16 @@ class Database:
             for i in range(len(astats)) ]
         return (header, data)
     
+    '''
+    arg: string representing the author name
+    return: a list of 5 indexes which represents the author's stats
+        index 0: Total number of conference papers 
+        index 1: Total number of journals
+        index 2: Total number of books
+        index 3: Total number of book chapters
+        index 4: Total number of publications
+    '''
     def get_publications_by_author_name(self, author_name):
-        header = ("Author", "Number of conference papers",
-            "Number of journals", "Number of books",
-            "Number of book chapers", "Total")
         idx = self.author_idx.get(author_name)  # get the id of the author
         astats =  [0, 0, 0, 0]
         for p in self.publications:
@@ -360,12 +366,19 @@ class Database:
         if not include_self:
             del data[author_id]
         return data
-
+    
+    '''
+    Args: Name of author
+    Return: A list of tubles containing the author, and all the coauthors.
+            The 1st element in the tuble is the name of the author,
+            The 2nd element represents the number of collaborations with that author.
+            list length - 1, repredents total number of coauthors.
+    '''
     def get_coauthor_details(self, name):
         author_id = self.author_idx[name]
         data = self._get_collaborations(author_id, True)
-        return [ (self.authors[key].name, data[key])
-            for key in data ]
+        return [ (self.authors[key].name, data[key]) for key in data ]
+        
         
     def get_network_data(self):
         na = len(self.authors)
@@ -382,7 +395,7 @@ class Database:
 
     '''
     args: the name of the author.
-    return: an integer representing number of times an author appears fist. Or None
+    return: An integer representing number of times an author appears fist. Or None
     '''
     def get_times_author_appears_first(self, author):
         if not author in self.author_idx.keys():
@@ -397,7 +410,11 @@ class Database:
             if  idx == pub.authors[0]:
                 times = times + 1
         return times
-        
+      
+    '''
+    args: the name of the author.
+    return: An integer representing number of times an author appears last. Or None
+    '''  
     def get_times_author_appears_last(self, author):
         if not author in self.author_idx.keys():
             return None
