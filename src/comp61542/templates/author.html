@@ -5,34 +5,66 @@
 
 
 
-
-<h1>authors</h1>
+<!-- 
+<h1>Authors</h1>
 <form name="input" action="/coauthors" method="get" data-ajax="false" onSubmit="validateForm(this)">
 Author: <input type="text" name="author_name" value="{{ args.author_name }}">
 
 <input type="submit" value="Submit">
-</form>
+</form> -->
 
 <h3>{{args.name}}</h3>
 
 
+<table class="table table-striped table-bordered table-hover" >
+  <thead>
+    <tr>
+    <th >Metric</th><th>Value</th>
+    </tr>
+  </thead>
+<tbody>
+<tr>
+<td>Total number of publications</td><td>{{args.stats[-1]}}</td>
+</tr>
+<tr>
+<td>Number of publications in conferences</td><td>{{args.stats[0]}}</td>
+</tr>
+<tr>
+<td>Number of publications in papers</td><td>{{args.stats[1]}}</td>
+</tr>
+<tr>
+<td>Number of publications in journals</td><td>{{args.stats[2]}}</td>
+</tr>
+<tr>
+<td>Number of publications in books</td><td>{{args.stats[3]}}</td>
+</tr>
+<tr>
+<td>Total number of co-authors</td><td>{{args.total_coauthors}}</td>
+</tr>
+<tr>
+<td>Number of times appeared first</td><td>{{args.times_first}}</td>
+</tr>
+<tr>
+<td>Number of times appeared last</td><td>{{args.times_last}}</td>
+</tr> 
+</tbody>
+</table>
   
-  
-  This is number of publication {{args.stats[-1]}} <br>
+<!--   This is number of publication {{args.stats[-1]}} <br>
   This is number conference papers {{args.stats[0]}} <br>
   This is number paper {{args.stats[1]}} <br>
   This is number jounral {{args.stats[2]}} <br>
   This is number books {{args.stats[3]}}  <br>
   This is number of coauthors {{args.auth}} <br>
   This is number of times first {{args.times_first}} <br>
-  This is number of times last {{args.times_last}} <br>
+  This is number of times last {{args.times_last}} <br> -->
 
 
-switch to master
+<!--   switch to master
 pull from origin
 swtich to your_branch
 commit your changes
-merge your_branch with master
+merge your_branch with master-->
 
 
 {% endblock %}
