@@ -21,9 +21,16 @@
   </thead>
 
   <tbody>
+  {% set current_url = request.url.split('/')[-1] %}
   {% for row in args.data[1] %}
     <tr>
-    <td><a href='/author/{{row[0]}}'>{{row[0]}} </a> </td>
+    <td>
+        {% if current_url == 'publication_author' %}
+            <a href='/author/{{row[0]}}'>{{row[0]}} </a>
+        {% else %}
+            {{row[0]}}
+        {% endif %}
+    </td>
     {% for data_item in row[1:] %}
         <td>{{ data_item }}</td>
     {% endfor %}
