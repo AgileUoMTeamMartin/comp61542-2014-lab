@@ -135,8 +135,7 @@ def showAuthors(name=None):
             coauthors.remove(auth)
             args['coauthors'] = coauthors
             break
-    args["times_first"]= db.get_times_author_appears_first(name)
-    args["times_last"]= db.get_times_author_appears_last(name)
+    args['detailed_stats'] = db.get_detailed_publications_by_author_name(name)
     
     return render_template('author.html', args=args)
 

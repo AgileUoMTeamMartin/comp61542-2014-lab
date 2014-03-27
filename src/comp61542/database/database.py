@@ -407,7 +407,7 @@ class Database:
         for pub in self.publications:
             # authors in pub are stored in the way they appeared in papaer
             # So we get the author at the 1st index
-            if  idx == pub.authors[0]:
+            if  idx == pub.authors[0] and len(pub.authors) > 1 :
                 times = times + 1
         return times
       
@@ -423,10 +423,49 @@ class Database:
         idx = self.author_idx.get(author)  # get the id of the author
 
         for pub in self.publications:
-            if  idx == pub.authors[-1]:
+            if  idx == pub.authors[-1] and len(pub.authors) > 1:
                 times = times + 1
         return times 
-         
+    
+    '''
+    args: the name of the author.
+    return: An integer representing number of times an author appears sole. Or None
+    '''
+    def get_times_author_appears_sole(self,author):
+        if not author in self.author_idx.keys():
+            return None
+            
+        times = 0
+        idx = self.author_idx.get(author)  # get the id of the author
+        
+        for pub in self.publications:
+            if len(pub.authors) == 1 and idx == pub.authors[-1]:
+                times = times + 1
+        return times
+    
+    def get_detailed_publications_by_author_name(self, author):
+        # index 0 is for appeared 1st stats
+        # index 1 is for appeared last stats
+        # index 2 is for sole stats
+        # each list is: papers, article, book, chapter, total.
+        stats = [[0, 0, 0, 0, 0] for i in range(0, 3)]
+        
+        idx = self.author_idx.get(author)
+        
+        for pub in self.publications:
+            if idx in pub.authors:
+                if len(pub.authors) > 1:
+                    if idx == pub.authors[0]:
+                        stats[0][pub.pub_type] += 1
+                        stats[0][4] += 1
+                    elif idx == pub.authors[-1]:
+                        stats[1][pub.pub_type] += 1
+                        stats[1][4] += 1
+                else:
+                    stats[2][pub.pub_type] += 1
+                    stats[2][4] += 1
+        return stats
+        
 class DocumentHandler(handler.ContentHandler):
     TITLE_TAGS = [ "sub", "sup", "i", "tt", "ref" ]
     PUB_TYPE = {
