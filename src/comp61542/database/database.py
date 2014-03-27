@@ -245,7 +245,7 @@ class Database:
 
 
     def get_publications_by_author(self):
-        header = ("Author", "Number of conference papers",
+        header = ("Author Last Name","Author First Name" ,"Number of conference papers",
             "Number of journals", "Number of books",
             "Number of book chapers", "Total")
 
@@ -253,8 +253,8 @@ class Database:
         for p in self.publications:
             for a in p.authors:
                 astats[a][p.pub_type] += 1
-
-        data = [ [self.authors[i].name] + astats[i] + [sum(astats[i])]
+        
+        data = [ [self.authors[i].name.split()[-1]]+[' '.join(self.authors[i].name.split()[0:len(self.authors[i].name.split())-1])] + astats[i] + [sum(astats[i])]
             for i in range(len(astats)) ]
         return (header, data)
     

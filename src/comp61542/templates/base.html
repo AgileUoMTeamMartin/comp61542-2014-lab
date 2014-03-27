@@ -143,8 +143,59 @@
     <!-- Bootstrap core CSS -->
     <script>
     $(document).ready(function() {
-        $('#dataTables').dataTable();
+    	/* var table=$('#dataTables').dataTable(
+    			); */
+         var table=$('#dataTables').dataTable(
+         		/* {
+         	"aaSorting": [ [0,'asc'], [1,'asc'] ],
+        	"aoColumnDefs": [
+        	                 { "aDataSort": [ 0, 0 ], "aTargets": [0]},
+        	                 { "aDataSort": [ 1, 0 ], "aTargets": [1] },
+        	                 { "aDataSort": [ 2, 0 ], "aTargets": [2] },
+        	                 { "aDataSort": [ 3, 0 ], "aTargets": [3] },
+        	                 { "aDataSort": [ 4, 0 ], "aTargets": [4] },
+        	                 { "aDataSort": [ 5, 0 ], "aTargets": [5] },
+        	                 { "aDataSort": [ 6, 0 ], "aTargets": [6] }
+        	                ]
+             
+        	
+        }  */
+        		); 
+        
+         $('#dataTables').unbind('click').click(function(){
+        	
+            var aaSorting = table.fnSettings().aaSorting;
+            var currentSortColumnIndex = aaSorting[0][0];
+            var currentSortDirection = aaSorting[0][1];
+            //var clickedSortColumnIndex = $(this).index(table);
+             var clickedSortColumsnIndex = aTable.fnGetPosition (this)
+            
+           
+            console.log(currentSortDirection);
+            var newSortDirection = 'asc';
+            console.log(currentSortColumnIndex);
+            console.log(clickedSortColumnIndex);
+            if(currentSortColumnIndex == clickedSortColumnIndex) {
+            	newSortDirection = (currentSortDirection == 'asc') ? 'desc' : 'asc';
+            	table.fnSort([clickedSortColumnIndex, newSortDirection], [0,'asc']);
+            	
+            }
+            else{
+            	if(clickedSortColumnIndex == 0) {
+                    table.fnSort( [0, newSortDirection]);
+                    }
+                else {
+                    table.fnSort([clickedSortColumnIndex, newSortDirection], [0,'asc']);
+                }	
+            	
+            }
+            console.log(newSortDirection);
+            
+      
+        });   
     });
+    
+    
 </script>
   </body>
 </html>
