@@ -1,0 +1,75 @@
+<dblp>
+<inproceedings>
+    <author>Author A</author>
+    <author>Author B</author>
+    <title>Paper 1</title>
+    <year>2014</year>
+</inproceedings>
+
+<inproceedings>
+    <author>Author A</author>
+    <author>Author B</author>
+    <title>Paper 2</title>
+    <year>2014</year>
+</inproceedings>
+
+<article>
+    <author>Author A</author>
+    <author>Author B</author>
+    <title>Article 1</title>
+    <year>2014</year>
+</article>
+
+<book>
+    <author>Author B</author>
+    <author>Author A</author>
+    <title>Book 1</title>
+    <year>2014</year>
+</book>
+
+<incollection>
+    <author>Author B</author>
+    <author>Author A</author>
+    <title>Chapter Book 1</title>
+    <year>2014</year>
+</incollection>
+
+<inproceedings>
+    <author>Author A</author>
+    <title>Paper 3</title>
+    <year>2014</year>
+</inproceedings>
+
+<article>
+    <author>Author A</author>
+    <title>Article 2</title>
+    <year>2014</year>
+</article>
+
+
+<book>
+    <author>Author B</author>
+    <title>Book 2</title>
+    <year>2014</year>
+</book>
+
+<incollection>
+    <author>Author B</author>
+    <title>Chapter Book 2</title>
+    <year>2014</year>
+</incollection>
+
+<inproceedings>
+    <author>Author B</author>
+    <title>Paper 4</title>
+    <year>2014</year>
+</inproceedings>
+
+<article>
+    <author>Author B</author>
+    <title>Article 3</title>
+    <year>2014</year>
+</article>
+
+</dblp>
+
