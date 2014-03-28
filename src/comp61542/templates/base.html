@@ -144,7 +144,10 @@
     <script>
     $(document).ready(function() {
          var table=$('#dataTables').dataTable(); 
-        
+         
+      
+      
+         
          $('#dataTables').on('click', 'th', function(){
             var aaSorting = table.fnSettings().aaSorting;
             var currentSortColumnIndex = aaSorting[0][0];
@@ -194,5 +197,7 @@
     
     
 </script>
+
+
   </body>
 </html>

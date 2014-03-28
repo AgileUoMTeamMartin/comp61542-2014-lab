@@ -26,7 +26,7 @@
     <tr>
     <td>
         {% if current_url == 'publication_author' %}
-            <a href='/author/{{row[0]}}'>
+            <a href='/author/{{row[1]+" "+row[0]}}'>
             {{row[0]}} </a>
         {% else %}
             {{row[0]}}
@@ -43,7 +43,5 @@
 </div>
 </div>
 </div></div>
-
-
 
 {% endblock %}
