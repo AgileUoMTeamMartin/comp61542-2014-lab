@@ -143,56 +143,53 @@
     <!-- Bootstrap core CSS -->
     <script>
     $(document).ready(function() {
-    	/* var table=$('#dataTables').dataTable(
-    			); */
-         var table=$('#dataTables').dataTable(
-         		/* {
-         	"aaSorting": [ [0,'asc'], [1,'asc'] ],
-        	"aoColumnDefs": [
-        	                 { "aDataSort": [ 0, 0 ], "aTargets": [0]},
-        	                 { "aDataSort": [ 1, 0 ], "aTargets": [1] },
-        	                 { "aDataSort": [ 2, 0 ], "aTargets": [2] },
-        	                 { "aDataSort": [ 3, 0 ], "aTargets": [3] },
-        	                 { "aDataSort": [ 4, 0 ], "aTargets": [4] },
-        	                 { "aDataSort": [ 5, 0 ], "aTargets": [5] },
-        	                 { "aDataSort": [ 6, 0 ], "aTargets": [6] }
-        	                ]
-             
-        	
-        }  */
-        		); 
+         var table=$('#dataTables').dataTable(); 
         
-         $('#dataTables').unbind('click').click(function(){
-        	
+         $('#dataTables').on('click', 'th', function(){
             var aaSorting = table.fnSettings().aaSorting;
             var currentSortColumnIndex = aaSorting[0][0];
             var currentSortDirection = aaSorting[0][1];
-            //var clickedSortColumnIndex = $(this).index(table);
-             var clickedSortColumsnIndex = aTable.fnGetPosition (this)
+            var clickedSortColumnIndex = $(this).index();
             
-           
+            if(currentSortColumnIndex == clickedSortColumnIndex )
+            {
+                table.fnSort( [ [clickedSortColumnIndex, currentSortDirection], [0, 'asc', 0] ] );
+            }
+            else {
+                // To change the default sorting, just change this to 'desc'
+                table.fnSort( [ [clickedSortColumnIndex, 'asc'], [0, 'asc', 0] ] );
+            }
+            
+            
+            /*console.log('currentSortDirection:');
             console.log(currentSortDirection);
-            var newSortDirection = 'asc';
+            
+            console.log('currentSortColumnIndex:');
             console.log(currentSortColumnIndex);
-            console.log(clickedSortColumnIndex);
+            
+            console.log('clickedSortColumnIndex');          
+            console.log(clickedSortColumnIndex);*/
+            
+            /*var newSortDirection = 'asc';
             if(currentSortColumnIndex == clickedSortColumnIndex) {
-            	newSortDirection = (currentSortDirection == 'asc') ? 'desc' : 'asc';
-            	table.fnSort([clickedSortColumnIndex, newSortDirection], [0,'asc']);
-            	
+                newSortDirection = (currentSortDirection == 'asc') ? 'desc' : 'asc';
+                console.log('newSortDirection');
+                console.log(newSortDirection);
+                table.fnSort([[clickedSortColumnIndex, newSortDirection]]);
             }
             else{
-            	if(clickedSortColumnIndex == 0) {
-                    table.fnSort( [0, newSortDirection]);
+                if(clickedSortColumnIndex == 0) {
+                    console.log('newSortDirection');
+                    console.log(newSortDirection);
+                    table.fnSort( [[0, newSortDirection]]);
                     }
-                else {
-                    table.fnSort([clickedSortColumnIndex, newSortDirection], [0,'asc']);
-                }	
-            	
-            }
-            console.log(newSortDirection);
-            
-      
-        });   
+                else{
+                    console.log('newSortDirection');
+                    console.log(newSortDirection);
+                    table.fnSort([[clickedSortColumnIndex, newSortDirection]]);
+                }
+            }*/
+        });  
     });
     
     
