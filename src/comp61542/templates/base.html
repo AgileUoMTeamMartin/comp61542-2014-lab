@@ -145,8 +145,17 @@
     $(document).ready(function() {
          var table=$('#dataTables').dataTable(); 
          
-      
-      
+         $('#dataTables_filter input').unbind();
+         $('#dataTables_filter input').bind('keyup', function(e) {
+        	 table.fnFilter(this.value);
+        	 
+           console.log(table.fnSettings().fnRecordsDisplay());  
+           if(table.fnSettings().fnRecordsDisplay()==1 && document.title=="Author Publication"){
+        	   window.location=document.getElementsByTagName('a')[7].href;
+        	  
+           }
+          }
+         );     
          
          $('#dataTables').on('click', 'th', function(){
             var aaSorting = table.fnSettings().aaSorting;
@@ -197,7 +206,16 @@
     
     
 </script>
+<script>
 
+var keyTimer;
+$("#dataTables").bind('filter').keyup(function() {
+    console.log("sda");         
+    clearTimeout(keyTimer);
+    keyTimer = setTimeout(function(){ console.log("filtered"); }, 500);
+});
+
+</script>
 
   </body>
 </html>
