@@ -119,7 +119,14 @@ def showPublicationSummary(status):
     return render_template("statistics_details.html", args=args)
 
 
-@app.route("/author/<name>")
+@app.route("/separations/<name>/<name_2>")    
+def showSeparations(name, name_2):
+    dataset = app.config['DATASET']
+    db = app.config['DATABASE']
+    return '{}'.format(db.get_degrees_of_separation(name, name_2))
+    
+
+@app.route("/author/<name>")    
 def showAuthors(name=None):
     dataset = app.config['DATASET']
     db = app.config['DATABASE']
@@ -129,7 +136,7 @@ def showAuthors(name=None):
     args['stats'] = db.get_publications_by_author_name(name)
     coauthors = db.get_coauthor_details(name)
     args['total_coauthors'] = len(coauthors) - 1
-     
+    args['all_authors'] = db.get_all_authors()
     for auth in coauthors:
         if auth[0] == name:
             coauthors.remove(auth)
