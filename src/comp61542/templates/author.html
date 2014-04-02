@@ -24,27 +24,51 @@ Author: <input type="text" name="author_name" value="{{ args.author_name }}">
     </thead>
     <tbody>
     <tr>
-        <td> Number of publications </td>
+        <td>
+        <p rel="tooltip" title="Number of publications for each publication type">  
+        Number of publications 
+        </p>
+        </td>
         <td> {{args.stats[4]}} </td>  <td> {{args.stats[1]}} </td>  <td> {{args.stats[0]}}</td>  <td> {{args.stats[2]}}</td>  <td> {{args.stats[3]}}</td>
     </tr>
     
     <tr>
-        <td> Number of times appeared first </td>
+        <td>
+        <p rel="tooltip" title="Number of times the author is the first author for their publications for each publication type"> 
+        Number of times appeared first 
+        </p>
+        </td>
+        
         <td> {{args.detailed_stats[0][4]}} </td>  <td> {{args.detailed_stats[0][1]}} </td>  <td> {{args.detailed_stats[0][0]}}</td>  <td> {{args.detailed_stats[0][2]}}</td>  <td> {{args.detailed_stats[0][3]}}</td>
     </tr>
     
     <tr>
-        <td> Number of times appeared last </td>
+        <td> 
+        <p rel="tooltip" title="Number of times the author isn't the first author for their publications for each publication type">
+        Number of times appeared last </td>
+        </p>
         <td> {{args.detailed_stats[1][4]}} </td>  <td> {{args.detailed_stats[1][1]}} </td>  <td> {{args.detailed_stats[1][0]}}</td>  <td> {{args.detailed_stats[1][2]}}</td>  <td> {{args.detailed_stats[1][3]}}</td>
     </tr>
     
     <tr>
-        <td> Number of times appeared sole </td>
-        <td> {{args.detailed_stats[2][4]}} </td>  <td> {{args.detailed_stats[2][1]}} </td>  <td> {{args.detailed_stats[2][0]}}</td>  <td> {{args.detailed_stats[2][2]}}</td>  <td> {{args.detailed_stats[2][3]}}</td>
+       <td> 
+        <p rel="tooltip" title="Number of times the author write paper individually for each publication type."> 
+        Number of times appeared sole 
+        </p> 
+        </td>
+        
+        
+        
+       <td> {{args.detailed_stats[2][4]}} </td>  <td> {{args.detailed_stats[2][1]}} </td>  <td> {{args.detailed_stats[2][0]}}</td>  <td> {{args.detailed_stats[2][2]}}</td>  <td> {{args.detailed_stats[2][3]}}</td>
     </tr>
     
     <tr>
-        <td> Number of Coauthors</td> <td>{{args.total_coauthors}}</td>
+        <td>
+        <p rel="tooltip" title="Total number of co-authors">
+        Number of Coauthors
+        </p>
+        
+        </td> <td>{{args.total_coauthors}}</td>
     </tr>
     
     </tbody>

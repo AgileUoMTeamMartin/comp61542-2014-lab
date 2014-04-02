@@ -19,7 +19,7 @@
 
         <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">      
             <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".sidebar-collapse">
+                <button type="button" class="navbar-toggle" rel="collapse" data-target=".sidebar-collapse">
                     <span class="sr-only">Toggle navigation</span>
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
@@ -31,7 +31,7 @@
 
           <!--   <ul class="nav navbar-top-links navbar-right">
                 <li class="dropdown">
-                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                    <a class="dropdown-toggle" rel="dropdown" href="#">
                         <i class="fa fa-envelope fa-fw"></i>  <i class="fa fa-caret-down"></i>
                     </a>
                     <ul class="dropdown-menu dropdown-messages">
@@ -42,7 +42,7 @@
                 </li>
                 /.dropdown
                 <li class="dropdown">
-                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                    <a class="dropdown-toggle" rel="dropdown" href="#">
                         <i class="fa fa-tasks fa-fw"></i>  <i class="fa fa-caret-down"></i>
                     </a>
                     <ul class="dropdown-menu dropdown-tasks">
@@ -52,7 +52,7 @@
                 </li>
                 /.dropdown
                 <li class="dropdown">
-                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                    <a class="dropdown-toggle" rel="dropdown" href="#">
                         <i class="fa fa-bell fa-fw"></i>  <i class="fa fa-caret-down"></i>
                     </a>
                     <ul class="dropdown-menu dropdown-alerts">
@@ -62,7 +62,7 @@
                 </li>
                 /.dropdown
                 <li class="dropdown">
-                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                    <a class="dropdown-toggle" rel="dropdown" href="#">
                         <i class="fa fa-user fa-fw"></i>  <i class="fa fa-caret-down"></i>
                     </a>
                     <ul class="dropdown-menu dropdown-user">
@@ -87,12 +87,13 @@
   <div class="sidebar-collapse">
  <ul class="nav" id="side-menu">
 
-  <li><a href="/statisticsdetails/publication_summary">Publication Summary</a></li>
-  <li><a href="/statisticsdetails/publication_author">Publication by Author</a></li>
-  <li><a href="/statisticsdetails/publication_year">Publication by Year</a></li>
-  <li><a href="/statisticsdetails/author_year">Author by Year</a></li>
-  <li><a href="/averages">Averaged Year Data</a></li>
-  <li><a href="/coauthors">Co-Authors</a></li>
+  <li><a href="/statisticsdetails/publication_summary" data-animation="true" rel="tooltip" title="This summarizes the statistics for the authors and each of the publication types">
+  Publication Summary</a></li>
+  <li><a href="/statisticsdetails/publication_author" rel="tooltip" title="This shows the total number of publications of an author for each publication type">Publication by Author</a></li>
+  <li><a href="/statisticsdetails/publication_year" rel="tooltip" title="This shows the total number of publications in a year for each publication type">Publication by Year</a></li>
+  <li><a href="/statisticsdetails/author_year" rel="tooltip" title="This shows the total number of authors that have publications in a year for each publication type">Author by Year</a></li>
+  <li><a href="/averages" rel="tooltip" title="This summarizes the averages for authors, publications and years">Averaged Year Data</a></li>
+  <li><a href="/coauthors" rel="tooltip" title="This shows the co-authors that collaborated with each author">Co-Authors</a></li>
 </ul>
 </div>
 </nav>
@@ -215,6 +216,12 @@ $("#dataTables").bind('filter').keyup(function() {
     keyTimer = setTimeout(function(){ console.log("filtered"); }, 500);
 });
 
+</script>
+
+<script type="text/javascript">
+    $(function () {
+        $("[rel='tooltip']").tooltip({'placement': 'bottom'});
+    });
 </script>
 
   </body>

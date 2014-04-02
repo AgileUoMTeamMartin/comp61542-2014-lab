@@ -101,18 +101,22 @@ def showPublicationSummary(status):
     args = {"dataset":dataset, "id":status}
 
     if (status == "publication_summary"):
+        args["description"] = "This shows the summary of the total number of authors per publication type and also the total number of publications per publication type"
         args["title"] = "Publication Summary"
         args["data"] = db.get_publication_summary()
 
     if (status == "publication_author"):
+        args["description"] = "This shows the total number for each publication type of an author and also the overall total number of publications"
         args["title"] = "Author Publication"
         args["data"] = db.get_publications_by_author()
 
     if (status == "publication_year"):
+        args["description"] = "This shows the total number per publication type for each year"
         args["title"] = "Publication by Year"
         args["data"] = db.get_publications_by_year()
 
     if (status == "author_year"):
+        args["description"] = "This shows the total number of authors per publication type for each year"
         args["title"] = "Author by Year"
         args["data"] = db.get_author_totals_by_year()
 
