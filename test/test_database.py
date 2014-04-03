@@ -250,6 +250,32 @@ class TestDatabase(unittest.TestCase):
             stats = db.get_detailed_publications_by_author_name(author)
             expected = expected_results.get(author) if expected_results.get(author) != None else [[0, 0, 0, 0, 0] for i in range(0, 3)]
             self.assertEqual(stats, expected, 'Incorrect stats for {}: {}. Expected {}'.format(author, stats, expected))
+    
+    def test_build_Graph(self):
+        import networkx as nx
+        G = nx.Graph()
+        G.add_nodes_from(['Author A', 'Author B', 'Author C', 'Author D', 'Author E', 'Author F'])
+        G.add_edges_from([(u'Author A', u'Author B'), (u'Author B', u'Author D'), (u'Author A', u'Author E'),
+                          (u'Author A', u'Author D'), (u'Author B', u'Author C')])
         
+        db = database.Database()
+        self.assertTrue(db.read(path.join(self.data_dir, "sprint3_test.xml")))
+        gg = db._build_graph()
+        self.assertEqual(gg.nodes(), G.nodes(), 'Incorrect result')
+        self.assertEqual(gg.edges(), G.edges(), 'Incorrect result')
+        
+    def test_get_degrees_of_separation(self):
+        expected_results = [
+        ['Author C', 'Author D', 1],
+        ['Author A', 'Author B', 0],
+        ['Author E', 'Author C', 2],
+        ['Author A', 'Author F', 'X']]
+        
+        db = database.Database()
+        self.assertTrue(db.read(path.join(self.data_dir, "sprint3_test.xml")))
+        for index in expected_results:
+            result = db.get_degrees_of_separation(index[0], index[1])
+            self.assertEqual(result, index[2], 'Incorrect result for {} and {}: {}. Expected is {}'.format(index[0], index[1], result, index[2]))
+
 if __name__ == '__main__':
     unittest.main()

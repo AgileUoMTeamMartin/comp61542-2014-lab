@@ -3,6 +3,9 @@ import itertools
 import numpy as np
 from xml.sax import handler, make_parser, SAXException
 
+# NetworkX needs to be installed fist, use pip install networkx
+from networkx import Graph, NetworkXNoPath, NetworkXError, shortest_path_length
+
 PublicationType = ["Conference Paper", "Journal", 
                    "Book", "Book Chapter"]
 
@@ -41,7 +44,8 @@ class Database:
         self.author_idx = {}
         self.min_year = None
         self.max_year = None
-
+        self.authors_graph = None
+        
         handler = DocumentHandler(self)
         parser = make_parser()
         parser.setContentHandler(handler)
@@ -59,9 +63,20 @@ class Database:
                 self.min_year = p.year
             if self.max_year == None or p.year > self.max_year:
                 self.max_year = p.year
-
+        
+        self.authors_graph = self._build_graph()
         return valid
 
+    def _build_graph(self):
+        network_data = self.get_network_data()
+        authors_nodes = [i[0] for i in network_data[0]]
+        authors_edges = [(self.authors[i[0]].name, self.authors[i[1]].name) for i in list(network_data[1])]
+        
+        G = Graph()
+        G.add_nodes_from(authors_nodes)
+        G.add_edges_from(authors_edges)
+        return G
+        
     def add_publication(self, pub_type, title, year, authors):
         if year == None or len(authors) == 0:
             # Logger class is a better option to print such warnings instead of print
@@ -465,6 +480,16 @@ class Database:
                     stats[2][pub.pub_type] += 1
                     stats[2][4] += 1
         return stats
+        
+    def get_degrees_of_separation(self, author_1, author_2):
+        if author_1 == author_2:
+            return 'There is no separation between the same author'
+        try:
+            return shortest_path_length(self.authors_graph, author_1, author_2) - 1 
+        except NetworkXNoPath:
+            return 'X'
+        except NetworkXError as e:
+            return 'Not found'
         
 class DocumentHandler(handler.ContentHandler):
     TITLE_TAGS = [ "sub", "sup", "i", "tt", "ref" ]

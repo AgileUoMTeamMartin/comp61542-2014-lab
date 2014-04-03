@@ -7,6 +7,56 @@
 <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='css/sb-admin.css') }}"/>
 <link href="{{ url_for('static', filename='font-awesome/css/font-awesome.css') }}" rel="stylesheet">
 
+<style type="text/css">
+.bs-example{
+	font-family: sans-serif;
+	position: relative;
+	margin: 100px;
+}
+.typeahead, .tt-query, .tt-hint {
+	border: 2px solid #CCCCCC;
+	border-radius: 8px;
+	font-size: 24px;
+	height: 30px;
+	line-height: 30px;
+	outline: medium none;
+	padding: 8px 12px;
+	width: 396px;
+}
+.typeahead {
+	background-color: #FFFFFF;
+}
+.typeahead:focus{
+	border: 2px solid #0097CF;
+}
+.tt-query {
+	box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset;
+}
+.tt-hint {
+	color: #999999;
+}
+.tt-dropdown-menu {
+	background-color: #FFFFFF;
+	border: 1px solid rgba(0, 0, 0, 0.2);
+	border-radius: 8px;
+	box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+	margin-top: 12px;
+	padding: 8px 0;
+	width: 422px;
+}
+.tt-suggestion {
+	font-size: 24px;
+	line-height: 24px;
+	padding: 3px 20px;
+}
+.tt-suggestion.tt-is-under-cursor {
+	background-color: #0097CF;
+	color: #FFFFFF;
+}
+.tt-suggestion p {
+	margin: 0;
+}
+</style>
 
   
 
@@ -132,22 +182,77 @@
   
 
     <!-- SB Admin Scripts - Include with every page -->
+    <!--script type="text/javascript" src="http://code.jquery.com/jquery.min.js"--></script>
     <script type=text/javascript src="{{ url_for('static',filename='js/jquery-1.10.2.js')}}"></script>
     <script type=text/javascript src="{{ url_for('static',filename='js/sb-admin.js')}}"></script>
     
     <script type=text/javascript src="{{ url_for('static',filename='js/bootstrap.js')}}"></script>
     <script type=text/javascript src="{{ url_for('static',filename='js/plugins/metisMenu/jquery.metisMenu.js')}}"></script>
-   
+    <script type=text/javascript src="{{ url_for('static', filename='js/typeahead.bundle.js')}}"></script>
+ 
+
     <!-- Page-Level Plugin Scripts - Tables -->
     <script  type=text/javascript src="{{ url_for('static', filename='js/plugins/dataTables/jquery.dataTables.js')}}"></script>
     <script  type=text/javascript src="{{ url_for('static', filename='js/plugins/dataTables/dataTables.bootstrap.js')}}"></script>
+    
     <!-- Bootstrap core CSS -->
+    <script src="//code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css">
+    <link rel="stylesheet" href="/resources/demos/style.css">
     <script>
-    $(document).ready(function() {
-         var table=$('#dataTables').dataTable(); 
+    
+    $(function() {
+     function get_result( event, ui ) {
+            var request = new XMLHttpRequest();
+            var url = 'http://0.0.0.0:9292/separations';
+            url = url.concat('/'.concat('{{args.name}}'));
+            url = url.concat('/'.concat(document.getElementById('authors_names').value));
+            request.onreadystatechange = function() {
+                if (request.readyState == 4) {
+                    var h4 = 'Degrees of separation bewteen '.concat('{{args.name}}');
+                    h4 = h4.concat(' and '.concat(document.getElementById('authors_names').value));
+
+                    h4 = h4.concat(' is: '.concat(request.responseText));
+                    document.getElementById("answer").innerHTML=h4;
+                }
+            }
+            request.open("GET", url, true);
+            request.send(null); 
+      }
+      
+      {% set authors = ', '.join(authors) %}
+      {% set authors_i = []%}
+      {% for i in args.all_authors%}
+        // DO NOT DELETE THIS IT IS NOT COMMENT
+        //{{authors_i.append('{}'.format(i))}}
+      {% endfor %}
          
-         $('#dataTables_filter input').unbind();
-         $('#dataTables_filter input').bind('keyup', function(e) {
+      var availableTags = {{ authors_i | safe}}
+      $( "#authors_names" ).autocomplete({
+      source: availableTags,
+      select: get_result,
+    });
+    
+    $("#authors_names").bind("keypress", {}, keypressInBox);
+    function keypressInBox(e) {
+        var code = (e.keyCode ? e.keyCode : e.which);
+        if (code == 13) { //Enter keycode                        
+            var input = document.getElementById('authors_names').value
+            if(input.match(/^\s*$/))
+            {
+            }
+            else {get_result()}
+        }
+    };
+    
+  });
+  
+  </script>
+    <script type="text/javascript">
+    $(document).ready(function() {
+        var table=$('#dataTables').dataTable();
+        $('#dataTables_filter input').unbind();
+        $('#dataTables_filter input').bind('keyup', function(e) {
         	 table.fnFilter(this.value);
         	 
            console.log(table.fnSettings().fnRecordsDisplay());  
@@ -173,35 +278,6 @@
                 table.fnSort( [ [clickedSortColumnIndex, 'asc'], [0, 'asc', 0] ] );
             }
             
-            
-            /*console.log('currentSortDirection:');
-            console.log(currentSortDirection);
-            
-            console.log('currentSortColumnIndex:');
-            console.log(currentSortColumnIndex);
-            
-            console.log('clickedSortColumnIndex');          
-            console.log(clickedSortColumnIndex);*/
-            
-            /*var newSortDirection = 'asc';
-            if(currentSortColumnIndex == clickedSortColumnIndex) {
-                newSortDirection = (currentSortDirection == 'asc') ? 'desc' : 'asc';
-                console.log('newSortDirection');
-                console.log(newSortDirection);
-                table.fnSort([[clickedSortColumnIndex, newSortDirection]]);
-            }
-            else{
-                if(clickedSortColumnIndex == 0) {
-                    console.log('newSortDirection');
-                    console.log(newSortDirection);
-                    table.fnSort( [[0, newSortDirection]]);
-                    }
-                else{
-                    console.log('newSortDirection');
-                    console.log(newSortDirection);
-                    table.fnSort([[clickedSortColumnIndex, newSortDirection]]);
-                }
-            }*/
         });  
     });
     
