@@ -1,6 +1,6 @@
 from comp61542 import app
 from database import database
-from flask import (render_template, request)
+from flask import (render_template, request, send_from_directory, send_file)
 
 def format_data(data):
     fmt = "%.2f"
@@ -148,8 +148,11 @@ def showAuthors(name=None):
             break
     args['detailed_stats'] = db.get_detailed_publications_by_author_name(name)
     
-    return render_template('author.html', args=args)
+    pic = db.draw_graph_for_author(name)
+    #args['ego_graph'] = 'http://0.0.0.0:9292/graphs/{}'.format(pic.rsplit('/', 1)[1])    
+    return render_template('author.html', args=args, filename=pic.rsplit('/', 1)[1])
 
+    
 @app.route("/author")
 def showAuthorsSearch():
     dataset = app.config['DATASET']

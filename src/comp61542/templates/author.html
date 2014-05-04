@@ -100,6 +100,7 @@ Author: <input type="text" name="author_name" value="{{ args.author_name }}">
      <h5 id="answer">Degrees of separation: </h5>
 </div>
 
+<img src={{ url_for('static', filename='graphs/{}'.format(filename)) }}  >
 
 <!--   This is number of publication {{args.stats[-1]}} <br>
   This is number conference papers {{args.stats[0]}} <br>

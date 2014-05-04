@@ -1,10 +1,13 @@
+import os
+
 from comp61542.statistics import average
 import itertools
 import numpy as np
 from xml.sax import handler, make_parser, SAXException
 
 # NetworkX needs to be installed fist, use pip install networkx
-from networkx import Graph, NetworkXNoPath, NetworkXError, shortest_path_length
+from networkx import Graph, NetworkXNoPath, NetworkXError, shortest_path_length, spring_layout, draw_networkx_edge_labels, draw
+from matplotlib import pyplot as plt
 
 PublicationType = ["Conference Paper", "Journal", 
                    "Book", "Book Chapter"]
@@ -75,6 +78,17 @@ class Database:
         G = Graph()
         G.add_nodes_from(authors_nodes)
         G.add_edges_from(authors_edges)
+        return G
+      
+    def _build_ego_graph(self, central_author, coauthors): 
+        G = Graph()
+        nodes = [n[0] for n in coauthors]
+        G.add_nodes_from(nodes)
+        G.add_node(central_author)
+        
+        for edge in coauthors:
+            G.add_edge(central_author,edge[0],weight=edge[1])
+        
         return G
         
     def add_publication(self, pub_type, title, year, authors):
@@ -491,6 +505,29 @@ class Database:
         except NetworkXError as e:
             return 'Not found'
         
+    def draw_graph_for_author(self, author_name):
+        if not author_name in self.author_idx.keys():
+            return None
+        
+        collabs = self.get_coauthor_details(author_name)
+        ego_graph = self._build_ego_graph(author_name, collabs)
+        
+        graph_name = 'comp61542/static/graphs/collabs_{}.jpg'.format(author_name.replace(" ", ""))
+        labels = dict()
+        for e, w in ego_graph[author_name].items():
+            edge = (author_name, e)
+            label = 'collabs: {}'.format(w['weight'])
+            labels[edge] = label
+
+        pos= spring_layout(ego_graph, scale=1, k=1)
+        plt.figure(figsize=(20,20))
+        colors=range(len(labels))
+        draw_networkx_edge_labels(ego_graph,pos, edge_labels=labels)
+        draw(ego_graph,pos, node_color='#A0CBE2',edge_color=colors, width=4, dge_cmap=plt.cm.Blues, with_labels=True)
+        plt.savefig(graph_name)
+        return os.path.abspath(graph_name)
+
+
 class DocumentHandler(handler.ContentHandler):
     TITLE_TAGS = [ "sub", "sup", "i", "tt", "ref" ]
     PUB_TYPE = {
